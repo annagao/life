@@ -1,0 +1,29 @@
+{
+  "name": "health-app",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "icons": "node scripts/generate-pwa-icons.mjs"
+  },
+  "dependencies": {
+    "luxon": "^3.7.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "recharts": "^2.12.7"
+  },
+  "devDependencies": {
+    "@types/luxon": "^3.7.1",
+    "@types/pngjs": "^6.0.5",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "pngjs": "^7.0.0",
+    "typescript": "~5.6.3",
+    "vite": "^5.4.11",
+    "vite-plugin-pwa": "^1.2.0"
+  }
+}
