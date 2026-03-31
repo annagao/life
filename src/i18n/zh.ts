@@ -23,7 +23,9 @@ export const zh = {
   navPet: "Bingo",
 
   todoTitle: "To Do",
+  todoToday: "今天",
   todoDateLabel: (iso: string) => `${iso}`,
+  todoHistorySection: "往日记录",
   todoDailyGoal: "今日小目标",
   todoDailyGoalPlaceholder: "一句话就够，比如：早点睡",
   todoListTitle: "清单",

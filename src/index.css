@@ -625,6 +625,58 @@ input:focus {
   background: rgba(224, 122, 138, 0.22);
 }
 
+.todo-history-block {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.todo-history-block__title {
+  margin: 0.25rem 0 0;
+  padding: 0 0.15rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: -0.02em;
+}
+
+.todo-history-day {
+  padding: 1rem 1.05rem;
+  border: 1px solid rgba(120, 90, 140, 0.1);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.todo-history-day__date {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.todo-history-day__goal {
+  margin: 0 0 0.75rem;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--text);
+  padding: 0.5rem 0.75rem;
+  border-radius: 12px;
+  background: rgba(124, 158, 178, 0.1);
+}
+
+.todo-list--readonly .todo-check {
+  cursor: default;
+  opacity: 0.85;
+}
+
+.todo-item--readonly {
+  padding: 0.5rem 0.65rem;
+}
+
+.todo-item--readonly:hover {
+  box-shadow: none;
+}
+
 /* —— 小金毛宠物页 —— */
 .pet-page {
   padding-bottom: 0.25rem;

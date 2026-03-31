@@ -1,17 +1,19 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { TodoDay, TodoItem } from "../types";
 import * as store from "../storage";
 import { zh } from "../i18n/zh";
-import { todayISO } from "../utils";
+import { formatShortDate, todayISO } from "../utils";
 
 function newId(): string {
   return `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
 }
 
 export function TodoSection() {
-  const [dateKey, setDateKey] = useState(todayISO);
+  const [dateKey, setDateKey] = useState(() => todayISO());
   const [state, setState] = useState<TodoDay>(() => store.getTodoDay(todayISO()));
   const [draft, setDraft] = useState("");
+
+  const historyDates = useMemo(() => store.getTodoHistoryDateKeysDescending(), [state, dateKey]);
 
   useEffect(() => {
     const id = window.setInterval(() => {
@@ -83,7 +85,9 @@ export function TodoSection() {
           <h2 id="todo-heading" className="todo-page__title">
             {zh.todoTitle}
           </h2>
-          <p className="todo-page__date">{zh.todoDateLabel(dateKey)}</p>
+          <p className="todo-page__date">
+            {zh.todoToday} · {formatShortDate(dateKey)}
+          </p>
         </div>
 
         <label htmlFor="todo-daily-goal" className="todo-label">
@@ -140,6 +144,47 @@ export function TodoSection() {
           </ul>
         )}
       </section>
+
+      {historyDates.length > 0 && (
+        <div className="todo-history-block" aria-labelledby="todo-history-heading">
+          <h2 id="todo-history-heading" className="todo-history-block__title">
+            {zh.todoHistorySection}
+          </h2>
+          {historyDates.map((iso) => {
+            const day = store.getTodoDay(iso);
+            return (
+              <section key={iso} className="card todo-history-day" aria-label={formatShortDate(iso)}>
+                <h3 className="todo-history-day__date">{formatShortDate(iso)}</h3>
+                {day.dailyGoal.trim() ? (
+                  <p className="todo-history-day__goal">{day.dailyGoal}</p>
+                ) : null}
+                {day.items.length > 0 ? (
+                  <ul className="todo-list todo-list--readonly">
+                    {day.items.map((it) => (
+                      <li
+                        key={it.id}
+                        className={`todo-item todo-item--readonly ${it.done ? "todo-item--done" : ""}`}
+                      >
+                        <div className="todo-row">
+                          <input
+                            type="checkbox"
+                            className="todo-check"
+                            checked={it.done}
+                            disabled
+                            tabIndex={-1}
+                            aria-hidden
+                          />
+                          <span className="todo-text">{it.text}</span>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
+              </section>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

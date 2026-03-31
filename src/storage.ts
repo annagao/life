@@ -1,4 +1,5 @@
 import type { FastingSession, Goal, PetState, TodoDay, TodoItem, WeightEntry } from "./types";
+import { todayISO } from "./utils";
 
 const KEYS = {
   weights: "health-app:weights",
@@ -242,4 +243,21 @@ export function setTodoDay(dateKey: string, day: TodoDay): void {
   const all = loadTodoMap();
   all[dateKey] = normalizeTodoDay(day);
   save(KEYS.todos, all);
+}
+
+function todoDayHasContent(day: TodoDay): boolean {
+  return Boolean(day.dailyGoal?.trim()) || day.items.length > 0;
+}
+
+/** 有内容的「历史」日期（不含今天），新→旧 */
+export function getTodoHistoryDateKeysDescending(): string[] {
+  const today = todayISO();
+  const all = loadTodoMap();
+  const keys: string[] = [];
+  for (const k of Object.keys(all)) {
+    if (k >= today) continue;
+    if (todoDayHasContent(all[k])) keys.push(k);
+  }
+  keys.sort((a, b) => b.localeCompare(a));
+  return keys;
 }
