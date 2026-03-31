@@ -34,15 +34,13 @@ export function GoalHome({
   const [startWeightStr, setStartWeightStr] = useState(() =>
     goal?.startWeightKg != null ? normalizeKgInputDisplay(goal.startWeightKg) : "",
   );
-  const [todayInput, setTodayInput] = useState(() =>
-    latestWeight?.date === todayISO() ? normalizeKgInputDisplay(latestWeight.weightKg) : "",
-  );
+  const [logDate, setLogDate] = useState(() => todayISO());
+  const [logWeightInput, setLogWeightInput] = useState("");
 
   useEffect(() => {
-    if (latestWeight?.date === todayISO()) {
-      setTodayInput(normalizeKgInputDisplay(latestWeight.weightKg));
-    }
-  }, [latestWeight]);
+    const e = entries.find((x) => x.date === logDate);
+    setLogWeightInput(e ? normalizeKgInputDisplay(e.weightKg) : "");
+  }, [logDate, entries]);
 
   const handleSaveGoal = (e: React.FormEvent) => {
     e.preventDefault();
@@ -185,34 +183,50 @@ export function GoalHome({
 
       <section className="card home-weight-card" aria-labelledby="today-weight-heading">
         <h2 id="today-weight-heading" className="card-title">
-          {zh.todayWeight}
+          {zh.logWeightSection}
         </h2>
+        <p className="muted section-subtitle" style={{ marginTop: "-0.25rem", marginBottom: "0.65rem" }}>
+          {zh.logWeightHint}
+        </p>
 
         <div className="home-weight-today">
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              const w = Number(todayInput);
+              const w = Number(String(logWeightInput).trim());
               if (!Number.isFinite(w) || w <= 0) return;
-              onLogWeight(todayISO(), w);
+              onLogWeight(logDate, w);
             }}
           >
-            <label htmlFor="today-w">{zh.weightKg}</label>
-            <div className="row">
-              <input
-                id="today-w"
-                type="number"
-                step="0.1"
-                min="1"
-                inputMode="decimal"
-                placeholder={zh.weightPlaceholder}
-                value={todayInput}
-                onChange={(e) => setTodayInput(e.target.value)}
-              />
-              <button type="submit" className="btn btn-primary" style={{ flex: "0 0 auto", minWidth: "100px" }}>
-                {zh.save}
-              </button>
+            <div className="row goal-form-row" style={{ marginBottom: "0.65rem" }}>
+              <div>
+                <label htmlFor="log-d">{zh.date}</label>
+                <input
+                  id="log-d"
+                  type="date"
+                  required
+                  max={todayISO()}
+                  value={logDate}
+                  onChange={(e) => setLogDate(e.target.value)}
+                />
+              </div>
+              <div>
+                <label htmlFor="log-w">{zh.weightKg}</label>
+                <input
+                  id="log-w"
+                  type="number"
+                  step="0.1"
+                  min="1"
+                  inputMode="decimal"
+                  placeholder={zh.weightPlaceholder}
+                  value={logWeightInput}
+                  onChange={(e) => setLogWeightInput(e.target.value)}
+                />
+              </div>
             </div>
+            <button type="submit" className="btn btn-primary btn-block">
+              {zh.save}
+            </button>
           </form>
         </div>
 

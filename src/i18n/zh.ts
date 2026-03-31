@@ -95,6 +95,9 @@ export const zh = {
   editGoal: "编辑目标",
 
   todayWeight: "今日体重",
+  /** 首页体重区块标题（支持选日期） */
+  logWeightSection: "记录体重",
+  logWeightHint: "选择日期后可补记或修改任意一天的体重。",
   weightKg: "体重（公斤）",
   save: "保存",
   lastLogged: (w: number, date: string) => `上次记录：${w} 公斤 · ${date}`,
@@ -103,7 +106,7 @@ export const zh = {
   date: "日期",
   addEntry: "添加记录",
   history: "历史记录",
-  noEntries: "暂无记录，请在上方添加。",
+  noEntries: "暂无记录，可在上方选择日期添加。",
   remove: "删除",
 
   weightTrend: "体重趋势",
