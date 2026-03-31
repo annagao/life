@@ -331,6 +331,18 @@ input:focus {
   box-sizing: border-box;
 }
 
+/* 首页「记录体重」：日期列收窄，体重列占剩余空间 */
+.home-weight-card .home-weight-form-row > .home-weight-date-field {
+  flex: 0 0 auto;
+  max-width: 10rem;
+  min-width: 0;
+}
+
+.home-weight-card .home-weight-date-input[type="date"] {
+  width: 100%;
+  max-width: 10rem;
+}
+
 .progress-track {
   height: 8px;
   background: rgba(124, 158, 178, 0.2);
@@ -675,6 +687,11 @@ input:focus {
 
 .todo-item--readonly:hover {
   box-shadow: none;
+}
+
+.todo-list--history .todo-check {
+  cursor: pointer;
+  opacity: 1;
 }
 
 /* —— 小金毛宠物页 —— */

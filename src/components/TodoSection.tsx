@@ -15,6 +15,19 @@ export function TodoSection() {
 
   const historyDates = useMemo(() => store.getTodoHistoryDateKeysDescending(), [state, dateKey]);
 
+  /** 往日清单勾选后 bump，触发本组件重渲染以反映 store */
+  const [, setHistoryBump] = useState(0);
+
+  const toggleHistoryItem = useCallback((iso: string, id: string) => {
+    const day = store.getTodoDay(iso);
+    const next: TodoDay = {
+      ...day,
+      items: day.items.map((it) => (it.id === id ? { ...it, done: !it.done } : it)),
+    };
+    store.setTodoDay(iso, next);
+    setHistoryBump((n) => n + 1);
+  }, []);
+
   useEffect(() => {
     const id = window.setInterval(() => {
       const d = todayISO();
@@ -159,23 +172,18 @@ export function TodoSection() {
                   <p className="todo-history-day__goal">{day.dailyGoal}</p>
                 ) : null}
                 {day.items.length > 0 ? (
-                  <ul className="todo-list todo-list--readonly">
+                  <ul className="todo-list todo-list--history">
                     {day.items.map((it) => (
-                      <li
-                        key={it.id}
-                        className={`todo-item todo-item--readonly ${it.done ? "todo-item--done" : ""}`}
-                      >
-                        <div className="todo-row">
+                      <li key={it.id} className={`todo-item ${it.done ? "todo-item--done" : ""}`}>
+                        <label className="todo-row">
                           <input
                             type="checkbox"
                             className="todo-check"
                             checked={it.done}
-                            disabled
-                            tabIndex={-1}
-                            aria-hidden
+                            onChange={() => toggleHistoryItem(iso, it.id)}
                           />
                           <span className="todo-text">{it.text}</span>
-                        </div>
+                        </label>
                       </li>
                     ))}
                   </ul>

@@ -198,11 +198,12 @@ export function GoalHome({
               onLogWeight(logDate, w);
             }}
           >
-            <div className="row goal-form-row" style={{ marginBottom: "0.65rem" }}>
-              <div>
+            <div className="row goal-form-row home-weight-form-row" style={{ marginBottom: "0.65rem" }}>
+              <div className="home-weight-date-field">
                 <label htmlFor="log-d">{zh.date}</label>
                 <input
                   id="log-d"
+                  className="home-weight-date-input"
                   type="date"
                   required
                   max={todayISO()}
